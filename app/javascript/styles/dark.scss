@@ -1,0 +1,22 @@
+@import 'contrast';
+
+.column-header, .drawer__tab, .search__input, .column-back-button {
+	border-radius: 15px 15px 0px 0px;
+}
+
+.drawer__header, .drawer__tab {
+  border-radius: 15px;
+}
+
+.column-header, .search {
+	margin-bottom: 0px;
+}
+
+.column {
+	flex: auto;
+}
+
+.drawer, .column-header {
+	opacity: 0.9;
+}
+

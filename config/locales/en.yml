@@ -1013,7 +1013,8 @@ en:
   themes:
     contrast: Mastodon (High contrast)
     default: Mastodon (Dark)
-    mastodon-light: Mastodon (Light)
+    mastodon-light: Mastodon (light)
+    dark: Dark Mastodon
   time:
     formats:
       default: "%b %d, %Y, %H:%M"
