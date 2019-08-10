@@ -76,8 +76,8 @@ services:
     restart: always
     env_file: .env.production
     environment:
-      - DB_POOL=5
-    command: bundle exec sidekiq -c 5 -q default -q mailers
+      - DB_POOL=10
+    command: bundle exec sidekiq -c 10 -q default -q mailers
     depends_on:
       - db
       - redis
@@ -93,8 +93,8 @@ services:
     restart: always
     env_file: .env.production
     environment:
-      - DB_POOL=5
-    command: bundle exec sidekiq -c 5 -q default -q mailers
+      - DB_POOL=10
+    command: bundle exec sidekiq -c 10 -q default -q mailers
     depends_on:
       - db
       - redis
@@ -110,25 +110,8 @@ services:
     restart: always
     env_file: .env.production
     environment:
-      - DB_POOL=5
-    command: bundle exec sidekiq -c 5 -q pull
-    depends_on:
-      - db
-      - redis
-    networks:
-      - external_network
-      - internal_network
-    volumes:
-      - ./public/system:/mastodon/public/system
-
-  sidekiq-pull-2:
-    build: .
-    image: tootsuite/mastodon
-    restart: always
-    env_file: .env.production
-    environment:
-      - DB_POOL=5
-    command: bundle exec sidekiq -c 5 -q pull
+      - DB_POOL=10
+    command: bundle exec sidekiq -c 10 -q pull
     depends_on:
       - db
       - redis
@@ -144,25 +127,8 @@ services:
     restart: always
     env_file: .env.production
     environment:
-      - DB_POOL=5
-    command: bundle exec sidekiq -c 5 -q push
-    depends_on:
-      - db
-      - redis
-    networks:
-      - external_network
-      - internal_network
-    volumes:
-      - ./public/system:/mastodon/public/system
-
-  sidekiq-push-2:
-    build: .
-    image: tootsuite/mastodon
-    restart: always
-    env_file: .env.production
-    environment:
-      - DB_POOL=5
-    command: bundle exec sidekiq -c 5 -q push
+      - DB_POOL=10
+    command: bundle exec sidekiq -c 10 -q push
     depends_on:
       - db
       - redis
