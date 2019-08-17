@@ -3,7 +3,7 @@ services:
 
   db:
     restart: always
-    image: postgres:11.4-alpine
+    image: postgres:11.5-alpine
     networks:
       - internal_network
     healthcheck:
