@@ -128,8 +128,8 @@ services:
     restart: always
     env_file: .env.production
     environment:
-      - DB_POOL=5
-    command: bundle exec sidekiq -c 5 -q push
+      - DB_POOL=10
+    command: bundle exec sidekiq -c 10 -q push
     depends_on:
       - db
       - redis
