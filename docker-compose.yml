@@ -3,7 +3,7 @@ services:
 
   db:
     restart: always
-    image: postgres:12.0-alpine
+    image: postgres:12-alpine
     shm_size: 256mb
     networks:
       - internal_network
@@ -14,7 +14,7 @@ services:
 
   redis:
     restart: always
-    image: redis:6.0-alpine
+    image: redis:6-alpine
     networks:
       - internal_network
     healthcheck:
