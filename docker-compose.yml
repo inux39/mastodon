@@ -17,6 +17,9 @@ services:
     image: redis:6-alpine
     networks:
       - internal_network
+    logging:
+      options:
+        max-size: "3m"
     healthcheck:
       test: ["CMD", "redis-cli", "ping"]
     volumes:
@@ -43,6 +46,9 @@ services:
     networks:
       - external_network
       - internal_network
+    logging:
+      options:
+        max-size: "5m"
     healthcheck:
       test: ["CMD-SHELL", "wget -q --spider --proxy=off localhost:3000/health || exit 1"]
     ports:
@@ -63,6 +69,8 @@ services:
     networks:
       - external_network
       - internal_network
+    logging:
+      driver: none
     healthcheck:
       test: ["CMD-SHELL", "wget -q --spider --proxy=off localhost:4000/api/v1/streaming/health || exit 1"]
     ports:
@@ -85,6 +93,8 @@ services:
     networks:
       - external_network
       - internal_network
+    logging:
+      driver: none
     volumes:
       - ./public/system:/mastodon/public/system
 
@@ -119,6 +129,8 @@ services:
     networks:
       - external_network
       - internal_network
+    logging:
+      driver: none
     volumes:
       - ./public/system:/mastodon/public/system
 
@@ -136,6 +148,8 @@ services:
     networks:
       - external_network
       - internal_network
+    logging:
+      driver: none
     volumes:
       - ./public/system:/mastodon/public/system
 
