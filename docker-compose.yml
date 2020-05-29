@@ -81,6 +81,7 @@ services:
 
     fluentd:
         build: ./modules/fluentd
+        restart: always
         volumes:
             - ./modules/fluentd/fluent.conf:/fluentd/etc/fluent.conf
             - ./modules/fluentd/buffer:/var/tmp/fluentd
@@ -90,12 +91,15 @@ services:
 
     nginx:
         image: nginx:1.17-alpine
+        restart: always
         volumes:
             - ./modules/nginx/log:/var/log/nginx
             - ./modules/nginx/nginx.conf:/etc/nginx/nginx.conf
             - ./public:/srv/http
         ports:
             - 8800:80
+        depends_on:
+            - fluentd
         networks:
             - internal_network
             - external_network
