@@ -88,26 +88,14 @@ services:
         networks:
             - fluentd
 
-    nginx-don:
+    nginx:
         image: nginx:1.17-alpine
         volumes:
             - ./modules/nginx/log:/var/log/nginx
-            - ./modules/nginx/don.conf:/etc/nginx/nginx.conf
+            - ./modules/nginx/nginx.conf:/etc/nginx/nginx.conf
             - ./public:/srv/http
         ports:
             - 8800:80
-        networks:
-            - internal_network
-            - external_network
-
-    nginx-image:
-        image: nginx:1.17-alpine
-        volumes:
-            - ./modules/nginx/log:/var/log/nginx
-            - ./modules/nginx/image.conf:/etc/nginx/nginx.conf
-            - ./public:/srv/http
-        ports:
-            - 8810:80
         networks:
             - internal_network
             - external_network
