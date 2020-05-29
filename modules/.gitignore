@@ -1,0 +1,4 @@
+esdata/
+fluentd/buffer/
+nginx/log/
+*.log*

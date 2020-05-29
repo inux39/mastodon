@@ -79,6 +79,39 @@ services:
       - db
       - redis
 
+    fluentd:
+        build: ./modules/fluentd
+        volumes:
+            - ./modules/fluentd/fluent.conf:/fluentd/etc/fluent.conf
+            - ./modules/fluentd/buffer:/var/tmp/fluentd
+            - ./modules/nginx/log:/var/log/nginx
+        networks:
+            - fluentd
+
+    nginx-don:
+        image: nginx:1.17-alpine
+        volumes:
+            - ./modules/nginx/log:/var/log/nginx
+            - ./modules/nginx/don.conf:/etc/nginx/nginx.conf
+            - ./public:/srv/http
+        ports:
+            - 8800:80
+        networks:
+            - internal_network
+            - external_network
+
+    nginx-image:
+        image: nginx:1.17-alpine
+        volumes:
+            - ./modules/nginx/log:/var/log/nginx
+            - ./modules/nginx/image.conf:/etc/nginx/nginx.conf
+            - ./public:/srv/http
+        ports:
+            - 8810:80
+        networks:
+            - internal_network
+            - external_network
+
   sidekiq-default-1:
     build: .
     image: tootsuite/mastodon
@@ -171,6 +204,8 @@ services:
 #      - internal_network
 
 networks:
+    fluentd:
+        external: true
   external_network:
   internal_network:
     internal: true
