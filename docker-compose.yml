@@ -93,7 +93,9 @@ services:
         restart: always
         container_name: "mastodon_nginx"
         volumes:
-            - ./modules/nginx:/etc/nginx
+            - ./modules/nginx/nginx.conf:/etc/nginx/nginx.conf
+            - ./modules/nginx/log:/etc/nginx/log
+            - ./modules/nginx/conf.d:/etc/nginx/conf.d
             - ./public:/srv/http
         ports:
             - 8800:80
