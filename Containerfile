@@ -1,8 +1,8 @@
 # syntax=docker/dockerfile:1.4
 # This needs to be bookworm-slim because the Ruby image is built on bookworm-slim
-ARG NODE_VERSION="20.12.2-bookworm-slim"
+ARG NODE_VERSION="20.15.0-bookworm-slim"
 
-FROM ghcr.io/moritzheiber/ruby-jemalloc:3.2.4-slim as ruby
+FROM ghcr.io/moritzheiber/ruby-jemalloc:3.3.1-slim as ruby
 FROM node:${NODE_VERSION} as build
 
 COPY --from=ruby /opt/ruby /opt/ruby
@@ -38,9 +38,7 @@ RUN apt-get update && \
     bundle config set silence_root_warning true && \
     bundle install -j"$(nproc)" && \
     yarn install --pure-lockfile --production --network-timeout 600000 && \
-    yarn cache clean && \
-    apt-get clean && \
-    rm -fr /var/lib/apt/lists/*
+    yarn cache clean
 
 FROM node:${NODE_VERSION}
 
@@ -60,7 +58,7 @@ ENV DEBIAN_FRONTEND="noninteractive" \
 
 # Ignoring these here since we don't want to pin any versions and the Debian image removes apt-get content after use
 # hadolint ignore=DL3008,DL3009
-RUN apt-get update && apt-get upgrade -y --no-install-recommends && \
+RUN apt-get update && \
     echo "Etc/UTC" > /etc/localtime && \
     groupadd -g "${GID}" mastodon && \
     useradd -l -u "$UID" -g "${GID}" -m -d /opt/mastodon mastodon && \
@@ -80,9 +78,7 @@ RUN apt-get update && apt-get upgrade -y --no-install-recommends && \
         tzdata \
         libreadline8 \
         tini && \
-    ln -s /opt/mastodon /mastodon && \
-    apt-get clean && \
-    rm -fr /var/lib/apt/lists/*
+    ln -s /opt/mastodon /mastodon
 
 # Note: no, cleaning here since Debian does this automatically
 # See the file /etc/apt/apt.conf.d/docker-clean within the Docker image's filesystem
@@ -104,7 +100,6 @@ WORKDIR /opt/mastodon
 # Precompile assets
 RUN OTP_SECRET=precompile_placeholder SECRET_KEY_BASE=precompile_placeholder rails assets:precompile
 
-VOLUME /opt/mastodon
 # Set the work dir and the container entry point
 ENTRYPOINT ["/usr/bin/tini", "--"]
 EXPOSE 3000 4000
