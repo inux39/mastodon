@@ -1,8 +1,8 @@
 # syntax=docker/dockerfile:1.4
 # This needs to be bookworm-slim because the Ruby image is built on bookworm-slim
-ARG NODE_VERSION="20.15.0-bookworm-slim"
+ARG NODE_VERSION="20.15.1-bookworm-slim"
 
-FROM ghcr.io/moritzheiber/ruby-jemalloc:3.3.1-slim as ruby
+FROM ghcr.io/moritzheiber/ruby-jemalloc:3.3.4-slim as ruby
 FROM node:${NODE_VERSION} as build
 
 COPY --from=ruby /opt/ruby /opt/ruby
