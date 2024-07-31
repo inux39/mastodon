@@ -16,8 +16,10 @@ WORKDIR /opt/mastodon
 COPY Gemfile* package.json yarn.lock /opt/mastodon/
 
 # hadolint ignore=DL3008
-RUN apt-get update && \
-    apt-get -yq dist-upgrade && \
+RUN --mount=type=cache,target=/var/lib/apt,sharing=locked \
+    --mount=type=cache,target=/var/cache/apt,sharing=locked \
+    apt-get update && \
+    apt-get -yq full-upgrade && \
     apt-get install -y --no-install-recommends build-essential \
         git \
         libicu-dev \
@@ -58,7 +60,9 @@ ENV DEBIAN_FRONTEND="noninteractive" \
 
 # Ignoring these here since we don't want to pin any versions and the Debian image removes apt-get content after use
 # hadolint ignore=DL3008,DL3009
-RUN apt-get update && \
+RUN --mount=type=cache,target=/var/lib/apt,sharing=locked \
+    --mount=type=cache,target=/var/cache/apt,sharing=locked \
+    apt-get update && \
     apt-get -yq full-upgrade && \
     echo "Etc/UTC" > /etc/localtime && \
     groupadd -g "${GID}" mastodon && \
@@ -105,3 +109,4 @@ RUN OTP_SECRET=precompile_placeholder SECRET_KEY_BASE=precompile_placeholder rai
 # Set the work dir and the container entry point
 ENTRYPOINT ["/usr/bin/tini", "--"]
 EXPOSE 3000 4000
+
