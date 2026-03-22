@@ -4,8 +4,8 @@
 # the extended buildx capabilities used in this file.
 # Make sure multiarch TARGETPLATFORM is available for interpolation
 # See: https://docs.docker.com/build/building/multi-platform/
-ARG TARGETPLATFORM=${TARGETPLATFORM}
-ARG BUILDPLATFORM=${BUILDPLATFORM}
+#ARG TARGETPLATFORM=${TARGETPLATFORM}
+#ARG BUILDPLATFORM=${BUILDPLATFORM}
 ARG BASE_REGISTRY="docker.io"
 
 # Node version to use in base image, change with [--build-arg NODE_MAJOR_VERSION="22"]
@@ -49,7 +49,7 @@ ENV \
 # Set default shell used for running commands
 SHELL ["/bin/bash", "-o", "pipefail", "-o", "errexit", "-c"]
 
-ARG TARGETPLATFORM
+#ARG TARGETPLATFORM
 
 RUN echo "Target platform is ${TARGETPLATFORM}"
 
