@@ -7,8 +7,8 @@
 # the extended buildx capabilities used in this file.
 # Make sure multiarch TARGETPLATFORM is available for interpolation
 # See: https://docs.docker.com/build/building/multi-platform/
-ARG TARGETPLATFORM=${TARGETPLATFORM}
-ARG BUILDPLATFORM=${BUILDPLATFORM}
+#ARG TARGETPLATFORM=${TARGETPLATFORM}
+#ARG BUILDPLATFORM=${BUILDPLATFORM}
 ARG BASE_REGISTRY="docker.io"
 
 # Ruby image to use for base image, change with [--build-arg RUBY_VERSION="4.0.x"]
@@ -74,7 +74,7 @@ ENV \
 # Set default shell used for running commands
 SHELL ["/bin/bash", "-o", "pipefail", "-o", "errexit", "-c"]
 
-ARG TARGETPLATFORM
+#ARG TARGETPLATFORM
 
 RUN echo "Target platform is $TARGETPLATFORM"
 
@@ -157,7 +157,7 @@ RUN \
 # Build stage for media libraries (libvips, ffmpeg)
 FROM ${BASE_REGISTRY}/ruby:${RUBY_VERSION}-slim-${DEBIAN_VERSION} AS media-build
 
-ARG TARGETPLATFORM
+#ARG TARGETPLATFORM
 
 # Set default shell used for running commands
 SHELL ["/bin/bash", "-o", "pipefail", "-o", "errexit", "-c"]
@@ -285,6 +285,7 @@ RUN \
   --mount=type=cache,id=apt-cache-${TARGETPLATFORM},target=/var/cache/apt,sharing=locked \
   --mount=type=cache,id=apt-lib-${TARGETPLATFORM},target=/var/lib/apt,sharing=locked \
   # Install build tools and bundler dependencies from APT
+  apt-get update && \
   apt-get install -y --no-install-recommends \
   build-essential \
   git \
@@ -302,7 +303,7 @@ RUN \
 # Create temporary bundler specific build layer from build layer
 FROM ruby-build AS bundler
 
-ARG TARGETPLATFORM
+#ARG TARGETPLATFORM
 
 # Copy Gemfile config into working directory
 COPY Gemfile* /opt/mastodon/
@@ -330,7 +331,7 @@ RUN \
 # Create temporary assets build layer from build layer
 FROM ruby-build AS precompiler
 
-ARG TARGETPLATFORM
+#ARG TARGETPLATFORM
 
 # Copy Mastodon sources into layer
 COPY . /opt/mastodon/
@@ -373,7 +374,7 @@ RUN \
 # Prep final Mastodon Ruby layer
 FROM ruby AS mastodon
 
-ARG TARGETPLATFORM
+#ARG TARGETPLATFORM
 
 # Copy Mastodon sources into final layer
 COPY . /opt/mastodon/
