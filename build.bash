@@ -26,7 +26,7 @@ function build() {
   podman build \
     --pull=always \
     --build-arg BASE_REGISTRY="harbor.inux39.me/docker" \
-    --build-arg RUBY_VERSION="3.4.9" \
+    --build-arg RUBY_VERSION="4.0.6" \
     --platform="$(platform)" \
     --tag "$REPO/$IMAGE:$TAG" \
     --format docker \
