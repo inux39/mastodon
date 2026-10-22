@@ -1,12 +1,11 @@
 #!/bin/bash
 set -Ceu
-REPO="harbor.inux39.me/private"
-DATE=$(date +%Y%m%d%H%M%S)
 SH_ROOT="$(cd $(dirname "$0"); pwd)"
-COMMIT_ID="$(git show -s --format=%H)"
-TAG="build-$(uname -m)-${COMMIT_ID}"
+RUBY_VERSION="4.0.9"
 
-RUBY_VERSION="4.0.7"
+REPO="harbor.inux39.me/private"
+TAG="build-$(uname -m)"
+DATE=$(date +%Y%m%d%H%M%S)
 
 function platform() {
   case "$(uname -m)" in
@@ -37,21 +36,21 @@ function build() {
   echo "[INFO] Complete build $IMAGE:$TAG ($REPO/$IMAGE:$TAG)"
 }
 
-ARG="${1:-mastodon}"
+ARG="${1:-all}"
 case "$ARG" in
   mastodon )
     build "mastodon" "$SH_ROOT/Dockerfile"
     ;;
   mastodon-streaming )
-    build "streaming" "$SH_ROOT/streaming/Dockerfile"
+    build "mastodon-streaming" "$SH_ROOT/streaming/Dockerfile"
     ;;
   all )
     build "mastodon" "$SH_ROOT/Dockerfile"
-    build "streaming" "$SH_ROOT/streaming/Dockerfile"
+    build "mastodon-streaming" "$SH_ROOT/streaming/Dockerfile"
     ;;
   * )
-    echo "$(basename $0) [all/mastodon/streaming]"
-    exit 0
+    echo "$(basename $0) [all/mastodon/mastodon-streaming]"
+    exit 1
     ;;
 esac
 

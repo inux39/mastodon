@@ -3,29 +3,29 @@ set -Ceu
 REPO="harbor.inux39.me/private"
 DATE=$(date +%Y%m%d%H%M%S)
 SH_ROOT="$(cd $(dirname "$0"); pwd)"
-ARG="${1-:ALL}"
+TAG="${1:-$DATE}"
+TARGET="${2-:ALL}"
 
 function manifest() {
   IMAGE="harbor.inux39.me/private/$1"
-  TAG="$2"
   echo "[INFO] Start build $IMAGE:$TAG ($REPO/$IMAGE:$TAG)"
   podman manifest create "$IMAGE:$TAG"
-  podman manifest add "$IMAGE:$TAG" "$IMAGE:${TAG}-x86_64"
-  podman manifest add "$IMAGE:$TAG" "$IMAGE:${TAG}-aarch64"
+  podman manifest add --pull "$IMAGE:$TAG" "$IMAGE:build-x86_64"
+  podman manifest add --pull "$IMAGE:$TAG" "$IMAGE:build-aarch64"
   podman manifest push "$IMAGE:$TAG"
   echo "[INFO] Complete build $IMAGE:$TAG ($REPO/$IMAGE:$TAG)"
 }
 
-case "$ARG" in
+case "$TARGET" in
   mastodon )
-    manifest "mastodon" "$1"
+    manifest "mastodon"
     ;;
-  streaming )
-    manifest "streaming" "$1"
+  mastodon-streaming )
+    manifest "mastodon-streaming"
     ;;
   * )
-    manifest "mastodon" "$1"
-    manifest "streaming" "$1"
+    manifest "mastodon"
+    manifest "mastodon-streaming"
     ;;
 esac
 
