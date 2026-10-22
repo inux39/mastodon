@@ -6,7 +6,7 @@ SH_ROOT="$(cd $(dirname "$0"); pwd)"
 COMMIT_ID="$(git show -s --format=%H)"
 TAG="build-$(uname -m)-${COMMIT_ID}"
 
-RUBY_VERSION="4.0.6"
+RUBY_VERSION="4.0.7"
 
 function platform() {
   case "$(uname -m)" in
