@@ -10,8 +10,8 @@ function manifest() {
   IMAGE="harbor.inux39.me/private/$1"
   echo "[INFO] Start build $IMAGE:$TAG ($REPO/$IMAGE:$TAG)"
   podman manifest create "$IMAGE:$TAG"
-  podman manifest add --pull "$IMAGE:$TAG" "$IMAGE:build-x86_64"
-  podman manifest add --pull "$IMAGE:$TAG" "$IMAGE:build-aarch64"
+  podman manifest add --pull "docker://$IMAGE:$TAG" "$IMAGE:build-x86_64"
+  podman manifest add --pull "docker://$IMAGE:$TAG" "$IMAGE:build-aarch64"
   podman manifest push "$IMAGE:$TAG"
   echo "[INFO] Complete build $IMAGE:$TAG ($REPO/$IMAGE:$TAG)"
 }
