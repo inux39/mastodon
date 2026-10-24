@@ -30,7 +30,6 @@ function build() {
     --build-arg RUBY_VERSION="$RUBY_VERSION" \
     --platform="$(platform)" \
     --tag "$REPO/$IMAGE:$TAG" \
-    --format docker \
     --file "$FILE" .
   podman push "$REPO/$IMAGE:$TAG"
   echo "[INFO] Complete build $IMAGE:$TAG ($REPO/$IMAGE:$TAG)"
